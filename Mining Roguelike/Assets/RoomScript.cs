@@ -24,18 +24,25 @@ public class RoomScript : MonoBehaviour {
     GameObject[,] groundArray;
     GameObject[,] objectArray;
 
+    public Vector2 getRoomDimensions()
+    {
+        return new Vector2(xDim, yDim);
+    }
+
 	// Use this for initialization
 	void Start () {
         lowerBound = 5 + Mathf.FloorToInt(GlobalScript.floorLevel / 4);
         upperBound = 5 + Mathf.FloorToInt(GlobalScript.floorLevel / 2);
 
         //Generate room bounds
-        Random.InitState(Mathf.FloorToInt(UnityEngine.Time.time));
+        //Random.InitState(Mathf.FloorToInt(UnityEngine.Time.time));
 
         //X dimension Room (Actual size = 5, indices 0-4)
         xDim = Mathf.Min(Random.Range(lowerBound, upperBound + 1), maxDim);
+        Debug.Log("xDim is " + xDim);
         //Y dimension Room
         yDim = Mathf.Min(Random.Range(lowerBound, upperBound + 1), maxDim);
+        Debug.Log("yDim is " + yDim);
 
         //Initlizing spawn positions
         playerSpawnX = Random.Range(0, xDim);
