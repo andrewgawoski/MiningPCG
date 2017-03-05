@@ -19,7 +19,10 @@ public class RoomScript : MonoBehaviour {
     float rockDensity;
 
     public GameObject tilePrefab;
+    public GameObject wallPrefab;
+    public GameObject cornerPrefab;
     public GameObject rockPrefab;
+    GameObject playerReference;
 
     GameObject[,] groundArray;
     GameObject[,] objectArray;
@@ -31,6 +34,9 @@ public class RoomScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        playerReference = GameObject.FindGameObjectWithTag("Player");
+
         lowerBound = 5 + Mathf.FloorToInt(GlobalScript.floorLevel / 4);
         upperBound = 5 + Mathf.FloorToInt(GlobalScript.floorLevel / 2);
 
@@ -71,13 +77,67 @@ public class RoomScript : MonoBehaviour {
                 if (ladderSpawnX == x && ladderSpawnY == y)
                 {
                     //Make it a special ground tile that spawns the ladder down
-                    //groundArray[x, y].GetComponent<GroundScript>().ladderSpawn = true;
+                    groundArray[x, y].GetComponent<groundScript>().ladderSpawn = true;
                     
                 }
 
-                //Generate Rock Object Here
+                //Generate Rock Object Here (Make sure it isn't on the determined player spawn point)
+
+                //if(x != playerSpawnX && y != playerSpawnY)
+                if (new Vector2(x, y) != new Vector2(playerSpawnX, playerSpawnY))
+                {
+                    //We can try to spawn a rock
+                    if(Random.value <= rockDensity)
+                    {
+                        GameObject tempRock = GameObject.Instantiate(rockPrefab);
+                        tempRock.transform.position = new Vector3(x * GlobalScript.tileOffset, y * GlobalScript.tileOffset, 0.0f);
+                    }
+                }
+
+                //Generate left wall
+                GameObject tempLeft = GameObject.Instantiate(wallPrefab);
+                tempLeft.transform.position = new Vector3((-1) * GlobalScript.tileOffset, y * GlobalScript.tileOffset, 0.0f);
+                tempLeft.transform.GetChild(0).transform.Rotate(new Vector3(0.0f, 0.0f, -90.0f));
+                //Generate right wall
+                GameObject tempRight = GameObject.Instantiate(wallPrefab);
+                tempRight.transform.position = new Vector3(xDim * GlobalScript.tileOffset, y * GlobalScript.tileOffset, 0.0f);
+                tempRight.transform.GetChild(0).transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
             }
+
+            //Generate bottom wall
+            GameObject tempBot = GameObject.Instantiate(wallPrefab);
+            tempBot.transform.position = new Vector3(x * GlobalScript.tileOffset, (-1) * GlobalScript.tileOffset, 0.0f);
+
+            //Generate top wall
+            GameObject tempTop = GameObject.Instantiate(wallPrefab);
+            tempTop.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().flipY = true;
+            tempTop.transform.position = new Vector3(x * GlobalScript.tileOffset, yDim * GlobalScript.tileOffset, 0.0f);
         }
+
+        //Move the player appropriately (player spawn point)
+        playerReference.transform.position = new Vector3(playerSpawnX * GlobalScript.tileOffset, playerSpawnY * GlobalScript.tileOffset, 0.0f);
+
+        //Generate the corners (bottom right and clockwise)
+        GameObject tempCorner = GameObject.Instantiate(cornerPrefab);
+        tempCorner.transform.position = new Vector3((xDim) * GlobalScript.tileOffset, (-1) * GlobalScript.tileOffset, 0.0f);
+
+        tempCorner = GameObject.Instantiate(cornerPrefab);
+        tempCorner.transform.position = new Vector3((-1) * GlobalScript.tileOffset, (-1) * GlobalScript.tileOffset, 0.0f);
+        tempCorner.transform.GetChild(0).transform.Rotate(new Vector3(0.0f, 0.0f, -90.0f));
+
+        tempCorner = GameObject.Instantiate(cornerPrefab);
+        tempCorner.transform.position = new Vector3((-1) * GlobalScript.tileOffset, yDim * GlobalScript.tileOffset, 0.0f);
+        tempCorner.transform.GetChild(0).transform.Rotate(new Vector3(0.0f, 0.0f, 180.0f));
+
+        tempCorner = GameObject.Instantiate(cornerPrefab);
+        tempCorner.transform.position = new Vector3(xDim * GlobalScript.tileOffset, yDim * GlobalScript.tileOffset, 0.0f);
+        tempCorner.transform.GetChild(0).transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
+
+        //Eh, our room is generated at this point, lets resize the camera.
+        Camera.main.GetComponent<CameraScript>().adjustCamera(xDim, yDim);
+
+        //Make sure the player has control (can do things)
+        GlobalScript.playerHasControl = true;
     }
 	
 	// Update is called once per frame

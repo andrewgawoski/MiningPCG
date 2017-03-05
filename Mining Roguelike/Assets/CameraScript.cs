@@ -6,7 +6,7 @@ public class CameraScript : MonoBehaviour {
 
     Camera thisCamera;
 
-    void adjustCamera(int xDimension, int yDimension)
+    public void adjustCamera(int xDimension, int yDimension)
     {
         Debug.Log("Adjusting Camera: " + xDimension + " " + yDimension);
         
@@ -15,8 +15,8 @@ public class CameraScript : MonoBehaviour {
         thisCamera.transform.position = targetPosition;
 
 
-        //Resize the camera
-        //thisCamera.orthographicSize = 220.0f;
+        //Resize the camera (using yDimension + 2 to account for the walls of the room at the top and bottom)
+        thisCamera.orthographicSize = GlobalScript.tileOffset * (yDimension+2) / 2;
     }
 
 	// Use this for initialization
@@ -25,17 +25,19 @@ public class CameraScript : MonoBehaviour {
         thisCamera = Camera.main;
 
         thisCamera.rect = new Rect(0.0f, 0.0f, 1.0f, 1.0f);
-
-        //Camera.main.
-        //Camera.main.orthographicSize = 220.0f;
+        thisCamera.backgroundColor = Color.black;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        /*
 		if(Input.GetKeyDown("space"))
         {
             Vector2 tempVec = GameObject.Find("Room Controller").GetComponent<RoomScript>().getRoomDimensions();
             adjustCamera(Mathf.FloorToInt(tempVec.x), Mathf.FloorToInt(tempVec.y));
         }
+        */
+
 	}
 }
