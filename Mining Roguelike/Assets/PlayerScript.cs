@@ -10,9 +10,9 @@ public class PlayerScript : MonoBehaviour {
     Vector3 originalPosition;
 
     //Up right down left in order (clockwise from top)
-    float[] inputTimerArray = new float[4] { 0.0f, 0.0f, 0.0f, 0.0f };
-    public float timerThreshold = 1.0f;
-    public float timeToMove = 6000.0f;
+    float[] inputTimerArray;
+    public float timerThreshold;
+    public float timeToMove;
     float movementFraction = 0.0f;
 
     void changeDirection(Vector3 dirVector)
@@ -71,17 +71,22 @@ public class PlayerScript : MonoBehaviour {
 	void Start () {
         isMoving = false;
         currentDestination = this.transform.position;
-	}
+        inputTimerArray = new float[4] { 0.0f, 0.0f, 0.0f, 0.0f };
+        timeToMove = 0.5f;
+        timerThreshold = 10.0f;
+    }
 	
 	// Update is called once per frame
 	void Update () {
         //We really can't do much if we're currently moving, other than move. So don't do anything otherwise.
 		if(isMoving == false)
         {
+
             if(GlobalScript.playerHasControl)
             {
+
                 //Up Input
-                if(Input.GetButton("Up"))
+                if (Input.GetButton("Up"))
                 {
                     inputTimerArray[0] += 1.0f;
                     Debug.Log("Trying up");
@@ -90,11 +95,14 @@ public class PlayerScript : MonoBehaviour {
                     if (inputTimerArray[0] > timerThreshold)
                     {
                         movePlayer(Vector3.up);
-                    }
-                    
+                    }   
+                }
+                else
+                {
+                    inputTimerArray[0] = 0.0f;
                 }
 
-                if(Input.GetButtonUp("Up"))
+                if (Input.GetButtonUp("Up"))
                 {
                     inputTimerArray[0] = 0.0f;
                 }
@@ -110,6 +118,10 @@ public class PlayerScript : MonoBehaviour {
                     {
                         movePlayer(Vector3.right);
                     }
+                }
+                else
+                {
+                    inputTimerArray[1] = 0.0f;
                 }
 
                 if (Input.GetButtonUp("Right"))
@@ -129,6 +141,10 @@ public class PlayerScript : MonoBehaviour {
                         movePlayer(Vector3.down);
                     }
                 }
+                else
+                {
+                    inputTimerArray[2] = 0.0f;
+                }
 
                 if (Input.GetButtonUp("Down"))
                 {
@@ -146,6 +162,10 @@ public class PlayerScript : MonoBehaviour {
                     {
                         movePlayer(Vector3.left);
                     }
+                }
+                else
+                {
+                    inputTimerArray[3] = 0.0f;
                 }
 
                 if (Input.GetButtonUp("Left"))
@@ -180,6 +200,7 @@ public class PlayerScript : MonoBehaviour {
                 movementFraction = 0.0f;
                 originalPosition = this.transform.position;
                 isMoving = false;
+                //inputTimerArray = new float[4] { 0, 0, 0, 0 };
             }
         }
 	}
