@@ -26,6 +26,26 @@ public class PlayerScript : MonoBehaviour {
         
     }
 
+    void swingHoe()
+    {
+        GameObject roomRef = GameObject.Find("Room Controller");
+
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(this.transform.position.x, this.transform.position.y), new Vector2(currentDirection.x, currentDirection.y), GlobalScript.tileOffset);
+        if(hit.collider == null)
+        {
+            //We would be able to move (no rock or wall on the tile we're facing
+            int tileX = Mathf.FloorToInt(GlobalScript.currentPlayerIndex.x + currentDirection.x);
+            int tileY = Mathf.FloorToInt(GlobalScript.currentPlayerIndex.y + currentDirection.y);
+
+            roomRef.GetComponent<RoomScript>().getTileReference(tileX, tileY).SendMessage("digTile");
+        }
+        else
+        {
+            //We can't dig the ground tile in front of us for some reason (might not be there)
+        }
+        
+    }
+
     void movePlayer(Vector3 directionVector)
     {
         //Direction vector should always be "Vector3.up" etc.
@@ -43,19 +63,6 @@ public class PlayerScript : MonoBehaviour {
             originalPosition = this.transform.position;
             currentDestination = this.transform.position + (GlobalScript.tileOffset * directionVector);
 
-            /*float tFrac = 0.0f;
-            Vector3 startPos = this.transform.position;
-
-            while(targetLocation != this.transform.position)
-            {
-                //tFrac += Time.smoothDeltaTime / timeToMove;
-                //this.transform.position = Vector3.Lerp(startPos, targetLocation, tFrac);
-                this.transform.Translate(directionVector * Time.smoothDeltaTime);
-            }
-
-            //...and then
-            isMoving = false;
-            */
         }
         else
         {
@@ -84,6 +91,11 @@ public class PlayerScript : MonoBehaviour {
 
             if(GlobalScript.playerHasControl)
             {
+
+                if(Input.GetButtonDown("Jump"))
+                {
+                    swingHoe();
+                }
 
                 //Up Input
                 if (Input.GetButton("Up"))
@@ -200,6 +212,7 @@ public class PlayerScript : MonoBehaviour {
                 movementFraction = 0.0f;
                 originalPosition = this.transform.position;
                 isMoving = false;
+                GlobalScript.currentPlayerIndex = new Vector2(this.transform.position.x / GlobalScript.tileOffset, this.transform.position.y / GlobalScript.tileOffset);
                 //inputTimerArray = new float[4] { 0, 0, 0, 0 };
             }
         }

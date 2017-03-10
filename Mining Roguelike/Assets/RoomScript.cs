@@ -27,6 +27,11 @@ public class RoomScript : MonoBehaviour {
     GameObject[,] groundArray;
     GameObject[,] objectArray;
 
+    public GameObject getTileReference(int x, int y)
+    {
+        return groundArray[x, y];
+    }
+
     public Vector2 getRoomDimensions()
     {
         return new Vector2(xDim, yDim);
@@ -138,10 +143,17 @@ public class RoomScript : MonoBehaviour {
 
         //Make sure the player has control (can do things)
         GlobalScript.playerHasControl = true;
+
+        GlobalScript.currentPlayerIndex = new Vector2(playerReference.transform.position.x/GlobalScript.tileOffset, playerReference.transform.position.y/GlobalScript.tileOffset);
+
+        //Brief test
+        //groundArray[Mathf.FloorToInt(GlobalScript.currentPlayerIndex.x), Mathf.FloorToInt(GlobalScript.currentPlayerIndex.y)].transform.position = new Vector3(-200, -200);
+        
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        
+    }
 }
