@@ -4,8 +4,46 @@ using UnityEngine;
 
 public class GameInitScript : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    //Populates the dictionary of all word strings with appropriately localized words
+    void initializeDictionary()
+    {
+        GlobalScript.fullWords = new Dictionary<string, string>();
+
+        GlobalScript.fullWords.Add("New Game", "New Game");
+        GlobalScript.fullWords.Add("Continue", "Continue");
+        GlobalScript.fullWords.Add("Quit", "Quit");
+        GlobalScript.fullWords.Add("Stamina", "Stamina");
+        GlobalScript.fullWords.Add("star", "star");
+        GlobalScript.fullWords.Add("copper", "copper");
+        GlobalScript.fullWords.Add("iron", "iron");
+        GlobalScript.fullWords.Add("gold", "gold");
+        GlobalScript.fullWords.Add("silver", "silver");
+        GlobalScript.fullWords.Add("electrum", "electrum");
+        GlobalScript.fullWords.Add("steel", "steel");
+        GlobalScript.fullWords.Add("mithril", "mithril");
+        GlobalScript.fullWords.Add("starmetal", "starmetal");
+        GlobalScript.fullWords.Add("fabled", "fabled");
+        GlobalScript.fullWords.Add("coal", "coal");
+        GlobalScript.fullWords.Add("agate", "agate");
+        GlobalScript.fullWords.Add("quartz", "quartz");
+        GlobalScript.fullWords.Add("turquoise", "turquoise");
+        GlobalScript.fullWords.Add("garnet", "garnet");
+        GlobalScript.fullWords.Add("peridot", "peridot");
+        GlobalScript.fullWords.Add("amber", "amber");
+        GlobalScript.fullWords.Add("amethyst", "amethyst");
+        GlobalScript.fullWords.Add("topaz", "topaz");
+        GlobalScript.fullWords.Add("jade", "jade");
+        GlobalScript.fullWords.Add("emerald", "emerald");
+        GlobalScript.fullWords.Add("sapphire", "sapphire");
+        GlobalScript.fullWords.Add("ancient relic", "ancient relic");
+        GlobalScript.fullWords.Add("ruby", "ruby");
+        GlobalScript.fullWords.Add("diamond", "diamond");
+        GlobalScript.fullWords.Add("bread", "bread");
+    }
+
+    //Populates the array of item (information) in GlobalScript with values and appropriate names
+    void initilizeItemArray()
+    {
         GlobalScript.itemIndex = new ItemScript[21]
         {
         //Ores (Sale value, weight, name)
@@ -32,6 +70,12 @@ public class GameInitScript : MonoBehaviour {
         new OreScript(100, 1, StringResources.strRuby[GlobalScript.languageSelection]),
         new OreScript(100, 1, StringResources.strDiamond[GlobalScript.languageSelection]),
         };
+    }
+
+	// Use this for initialization
+	void Start () {
+        initializeDictionary();
+        initilizeItemArray();
 	}
 	
 	// Update is called once per frame

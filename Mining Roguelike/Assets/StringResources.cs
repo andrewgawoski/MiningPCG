@@ -5,6 +5,7 @@ using UnityEngine;
 public static class StringResources {
 
     //Language Support [English (0), ??? (1)]
+    
 
     //Menu Strings----------------------------------------------------------------------------------
     public static readonly string[] strNewGame = new string[] { "New Game" };
@@ -27,7 +28,7 @@ public static class StringResources {
     //Nonmetals-------------------------------------------------------------------------------------
     public static readonly string[] strCoal = new string[] { "coal" };
     public static readonly string[] strAgate = new string[] { "agate" };
-    public static readonly string[] strQuartz = new string[] { "quartz" };
+    public static readonly string[] strQuartz = new string[] { "cuarzo" };
     public static readonly string[] strTurquoise = new string[] { "turquoise" };
     public static readonly string[] strGarnet = new string[] { "garnet" };
     public static readonly string[] strPeridot = new string[] { "peridot" };
